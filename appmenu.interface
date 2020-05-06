@@ -1,0 +1,53 @@
+protocol appmenu
+
+copyright `SPDX-FileCopyrightText: 2017 David Edmundson
+SPDX-FileCopyrightText: 2020 Carson Black
+
+SPDX-License-Identifier: LGPL-2.1-or-later`
+
+description "Wayland protocol for communicating application menu DBus objects"
+
+`This description provides a high-level overview of the interplay between
+the interfaces defined in this protocol. For details, see the protocol
+specification.
+
+The appmenu_manager allows a client to request the creation of an appmenu
+object associated with an xdg_toplevel. The appmenu object allows a client to
+notify the compositor of a DBus com.canonical.dbusmenu object associated with
+itself.
+
+Clients should request the creation of an appmenu object when they create a
+DBus object for their application menu, and should release the object when they
+destroy a DBus object for their application menu.
+
+Clients should only own at most one appmenu object for each of their xdg_toplevel
+objects. A protocol error will be raised if a client requests more than one appmenu
+object for an xdg_toplevel.`
+
+interface zxdg_appmenu_v1 {
+    version 1
+
+    description "controller object for registering dbus application menus"
+`An object that provides access to the creation of appmenu objects.`
+
+    request set_address(service_name string, object_path string)
+}
+
+interface zxdg_appmenu_manager_v1 {
+    version 1
+
+    description "controller object for registering dbus application menus of a surface"
+`An object that provides access to clients to notify the compositor of
+associated DBus application menu objects for an xdg_toplevel.
+
+If not applicable, clients should remove this object.`
+
+    enum error {
+        has_menu 0
+    }
+
+    request create(
+        id new_id[zxdg_appmenu_v1],
+        surface object[xdg_toplevel]
+    )
+}
