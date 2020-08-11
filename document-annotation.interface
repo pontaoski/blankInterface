@@ -1,0 +1,62 @@
+protocol document_annotation
+
+copyright `SPDX-FileCopyrightText: 2020 Carson Black
+
+SPDX-License-Identifier: LGPL-2.1-or-later`
+
+description "Wayland protocol for annotating XDG toplevels with document information"
+
+`This description provides a high-level overview of the interplay between
+the interfaces defined in this protocol. For details, see the protocol
+specification.
+
+yeah uh i'm not writing this for a prototype protocol lmao`
+
+interface org_kde_plasma_document_annotation_manager_v1 {
+    version 1
+
+    description "controller object for creating org_kde_plasma_document_annotation_v1 for a toplevel"
+`An object that provides access to clients to notify the compositor of
+associated document information for an xdg_toplevel.
+
+If not applicable, clients should remove this object.`
+
+    enum error {
+        already_has_annotations 0
+    }
+
+    request create(
+        id new_id[org_kde_plasma_document_annotation_v1],
+        toplevel object[xdg_toplevel]
+    )
+}
+
+interface org_kde_plasma_document_annotation_v1 {
+    version 1
+
+    description "controller object for informing the compositor about a toplevel's documents"
+`An object that provides access to informing the compositor about a window's documents.`
+
+    enum window_state {
+        clean 0
+        dirty 1
+    }
+
+    request set_window_state(state enum[window_state])
+
+    enum document_type {
+        primary 0
+        secondary 1
+    }
+
+    enum document_state {
+        new 0
+        dirty 1
+        saved 2
+    }
+
+    request clear_document(kind enum[document_type])
+    request set_document_file(kind enum[document_type], string path)
+    request set_document_url(kind enum[document_type], string url)
+    request set_document_state(kind enum[document_type], state enum[document_state])
+}

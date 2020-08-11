@@ -1,0 +1,33 @@
+<protocol name="document_annotation">
+	<copyright><![CDATA[SPDX-FileCopyrightText: 2020 Carson Black
+
+SPDX-License-Identifier: LGPL-2.1-or-later]]></copyright>
+	<description summary="Wayland protocol for annotating XDG toplevels with document information">This description provides a high-level overview of the interplay between
+the interfaces defined in this protocol. For details, see the protocol
+specification.
+
+yeah uh i'm not writing this for a prototype protocol lmao</description>
+	<interface name="org_kde_plasma_document_annotation_manager_v1" version="1">
+		<description summary="controller object for creating org_kde_plasma_document_annotation_v1 for a toplevel">An object that provides access to clients to notify the compositor of
+associated document information for an xdg_toplevel.
+
+If not applicable, clients should remove this object.</description>
+		<request name="create">
+			<arg name="id" type="new_id" interface="org_kde_plasma_document_annotation_v1" />
+			<arg name="toplevel" type="object" interface="xdg_toplevel" />
+		</request>
+		<enum name="error">
+			<entry name="already_has_annotations" value="0" />
+		</enum>
+	</interface>
+	<interface name="org_kde_plasma_document_annotation_v1" version="1">
+		<description summary="controller object for informing the compositor about a toplevel&#39;s documents">An object that provides access to informing the compositor about a window's documents.</description>
+		<request name="set_window_state">
+			<arg name="state" type="uint" enum="window_state" />
+		</request>
+		<enum name="window_state">
+			<entry name="clean" value="0" />
+			<entry name="dirty" value="1" />
+		</enum>
+	</interface>
+</protocol>

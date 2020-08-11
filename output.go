@@ -6,6 +6,7 @@ type Arg struct {
 	Name          string `xml:"name,attr"`
 	ID            string `xml:"type,attr"`
 	InterfaceType string `xml:"interface,attr,omitempty"`
+	EnumType      string `xml:"enum,attr,omitempty"`
 }
 
 type Method struct {
@@ -80,8 +81,13 @@ func (p ProtocolDescription) ToProtocol() Protocol {
 				if inputArgument.Type.SingleType != nil {
 					outputArgument.ID = *inputArgument.Type.SingleType
 				} else {
-					outputArgument.ID = *inputArgument.Type.DualType.Base
-					outputArgument.InterfaceType = *inputArgument.Type.DualType.Sub
+					if *inputArgument.Type.DualType.Base == "enum" {
+						outputArgument.ID = "uint"
+						outputArgument.EnumType = *inputArgument.Type.DualType.Sub
+					} else {
+						outputArgument.ID = *inputArgument.Type.DualType.Base
+						outputArgument.InterfaceType = *inputArgument.Type.DualType.Sub
+					}
 				}
 				outputEvent.Args = append(outputEvent.Args, outputArgument)
 			}
@@ -99,8 +105,13 @@ func (p ProtocolDescription) ToProtocol() Protocol {
 				if inputArgument.Type.SingleType != nil {
 					outputArgument.ID = *inputArgument.Type.SingleType
 				} else {
-					outputArgument.ID = *inputArgument.Type.DualType.Base
-					outputArgument.InterfaceType = *inputArgument.Type.DualType.Sub
+					if *inputArgument.Type.DualType.Base == "enum" {
+						outputArgument.ID = "uint"
+						outputArgument.EnumType = *inputArgument.Type.DualType.Sub
+					} else {
+						outputArgument.ID = *inputArgument.Type.DualType.Base
+						outputArgument.InterfaceType = *inputArgument.Type.DualType.Sub
+					}
 				}
 				outputRequest.Args = append(outputRequest.Args, outputArgument)
 			}
